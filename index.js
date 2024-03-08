@@ -15,6 +15,8 @@ document.addEventListener("click", (event) => {
         : event.target.children[0]
         node.classList.toggle("fa-lock-open")
         node.classList.toggle("fa-lock")
+    } else if (type === "copy"){
+        copyToClickboard(event.target.textContent)
     }
 })
 
@@ -27,13 +29,24 @@ function generateRandomColor() {
     return "#" + color
 };
 
+function copyToClickboard (text) {
+    navigator.clipboard.writeText(text)
+}
+
 function setRandomColors() {
     cols.forEach((col) => {
+        const isLocked = col.querySelector("i").classList.contains("fa-lock")
         const text = col.querySelector("h2")
         const btn = col.querySelector("button")
         const color = generateRandomColor()
+
+        if (isLocked) {
+            return
+        }
+
         text.textContent = color
         col.style.background = generateRandomColor()
+
         setTextColor(text, color)
         setTextColor(btn, color)
     });
